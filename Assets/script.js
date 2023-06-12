@@ -9,11 +9,14 @@ class weather{
 
     }
 }
-var prevCity = new Array();                              //An array of up to 10 previous cities.
+var prevCity = new Array();
 var weekForecast = [new weather(), new weather(), new weather(), new weather(), new weather(), new weather()];
-var searchEl = document.getElementById("citySearch");   //form element
+var searchEl = document.getElementById("citySearch");
 const weatherAPIKey = "1baaf4b6d9aa798b3b8d3da12f59ef1f";
 const bingMapsAPIKey = "AqBjs9NHGIEZvYOeZEnKxKECXHpOHtdfQFrvkMwLm4iGlk5-il_6PI1U6c5Bwu9s";
+
+searchEl.addEventListener("submit", citySearch);
+displayHistory();
 
 function setHistory(){
     localStorage.setItem("weather", JSON.stringify(prevCity));
@@ -83,7 +86,6 @@ function citySearch(event) {
     addHistory(cityInput.value);
     cityInput.value = '';
 }
-searchEl.addEventListener("submit", citySearch);
 
 async function getWeather(city){
     let rawLocation = await fetch("http://dev.virtualearth.net/REST/v1/Locations?query=" + city + "&include=queryParse&key=" + bingMapsAPIKey + "&output=json");
@@ -154,7 +156,7 @@ function displayForecast(){
         thisWeather.appendChild(thisHumidity);
     }
 }
+
 function kelvinToFahrenheit(kelvin){
     return (kelvin * 1.8 -459.67);
 }
-displayHistory();
