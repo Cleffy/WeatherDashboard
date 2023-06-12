@@ -1,7 +1,7 @@
 class weather{
-    city;
     day;
     condition;
+    conditionIcon;
     temp;
     wind;
     humidity;
@@ -10,12 +10,7 @@ class weather{
     }
 }
 var prevCity = new Array();                              //An array of up to 10 previous cities.
-var today = new weather();                              //Weather for today
-var dayPlus1 = new weather();                           //Weather for today + 1
-var dayPlus2 = new weather();                           //Weather for today + 2
-var dayPlus3 = new weather();                           //Weather for today + 3
-var dayPlus4 = new weather();                           //Weather for today + 4
-var dayPlus5 = new weather();                           //Weather for today + 5
+var weekForecast = [new weather(), new weather(), new weather(), new weather(), new weather(), new weather()];
 var searchEl = document.getElementById("citySearch");   //form element
 const weatherAPIKey = "1baaf4b6d9aa798b3b8d3da12f59ef1f";
 const bingMapsAPIKey = "AqBjs9NHGIEZvYOeZEnKxKECXHpOHtdfQFrvkMwLm4iGlk5-il_6PI1U6c5Bwu9s";
@@ -91,26 +86,75 @@ function citySearch(event) {
 searchEl.addEventListener("submit", citySearch);
 
 async function getWeather(city){
-    console.log(city);
     let rawLocation = await fetch("http://dev.virtualearth.net/REST/v1/Locations?query=" + city + "&include=queryParse&key=" + bingMapsAPIKey + "&output=json");
     let geoLocation = await rawLocation.json();
     let lat = geoLocation.resourceSets[0].resources[0].geocodePoints[0].coordinates[0];
     let lon = geoLocation.resourceSets[0].resources[0].geocodePoints[0].coordinates[1];
-    console.log(lat);
-    console.log(lon);
     let rawForecast = await fetch("http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + weatherAPIKey);
     let forecast = await rawForecast.json();
-    console.log(forecast);
-    today.city = city;
-    today.day = "";
-    today.condition = forecast.list[0].weather[0].description;
-    today.temp = kelvinToFahrenheit(forecast.list[0].main.temp);
-    today.wind = forecast.list[0].wind.speed;
-    today.humidity = forecast.list[0].main.humidity;
-    console.log(today.temp);
+    //console.log(forecast);
+    for(let index in weekForecast){
+        weekForecast[index].day = dayjs().add(index, 'day');
+        weekForecast[index].condition = forecast.list[index].weather[0].description;
+        weekForecast[index].conditionIcon = forecast.list[0].weather[0].icon;
+        weekForecast[index].temp = kelvinToFahrenheit(forecast.list[index].main.temp).toFixed(2) + "°F";
+        weekForecast[index].wind = forecast.list[index].wind.speed.toFixed(2) + " MPH";
+        weekForecast[index].humidity = forecast.list[index].main.humidity + " %";
+    }
+    displayToday(city);
+    displayForecast();
+}
 
+function displayToday(city){
+    let currentWeather = document.getElementById("currentConditions");
+    currentWeather.innerHTML = '';
+    let currentHeader = document.createElement('div');
+    let currentCity = document.createElement('h2');
+    let currentConditionIcon = document.createElement('img');
+    let currentCondition = document.createElement('p');
+    let currentTemp = document.createElement('p');
+    let currentWind = document.createElement('p');
+    let currentHumidity = document.createElement('p');
+    currentHeader.className = 'weatherHeading';
+    currentCity.textContent = city + " (" + weekForecast[0].day.format('MMM D,YYYY') + ")";
+    currentConditionIcon.src = "https://openweathermap.org/img/wn/" + weekForecast[0].conditionIcon + ".png";
+    currentCondition.textContent = "Condition: " + weekForecast[0].condition;
+    currentTemp.textContent = "Temp: " + weekForecast[0].temp;
+    currentWind.textContent = "Wind: " + weekForecast[0].wind;
+    currentHumidity.textContent = "Humidity: " + weekForecast[0].humidity;
+    currentHeader.appendChild(currentCity);
+    currentHeader.appendChild(currentConditionIcon);
+    currentWeather.appendChild(currentHeader);
+    currentWeather.appendChild(currentCondition);
+    currentWeather.appendChild(currentTemp);
+    currentWeather.appendChild(currentWind);
+    currentWeather.appendChild(currentHumidity);
+}
+function displayForecast(){
+    for(let index = 1; index < weekForecast.length; index++){
+        let thisWeather = document.getElementById("day+" + index);
+        thisWeather.innerHTML = '';
+        let thisDay = document.createElement('h3');
+        let thisConditionIcon = document.createElement('img');
+        let thisCondition = document.createElement('p');
+        let thisTemp = document.createElement('p');
+        let thisWind = document.createElement('p');
+        let thisHumidity = document.createElement('p');
+        thisDay.textContent = weekForecast[index].day.format('MMM D,YYYY');
+        thisConditionIcon.src = "https://openweathermap.org/img/wn/" + weekForecast[index].conditionIcon + ".png";
+        thisCondition.textContent = "Condition: " + weekForecast[index].condition;
+        thisTemp.textContent = "Temp: " + weekForecast[index].temp;
+        thisWind.textContent = "Wind: " + weekForecast[index].wind;
+        thisHumidity.textContent = "Humidity: " + weekForecast[index].humidity;
+        thisWeather.appendChild(thisDay);
+        thisWeather.appendChild(thisConditionIcon);
+        thisWeather.appendChild(thisCondition);
+        thisWeather.appendChild(thisTemp);
+        thisWeather.appendChild(thisWind);
+        thisWeather.appendChild(thisHumidity);
+    }
 }
 function kelvinToFahrenheit(kelvin){
-    return Math.floor(kelvin * 1.8 -459.67);
+    return (kelvin * 1.8 -459.67);
 }
 displayHistory();
