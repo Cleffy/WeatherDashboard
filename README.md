@@ -1,2 +1,2 @@
-# Challenge6-WeatherDashboard
+# Weather Dashboard
  Weather outlook for multiple cities
