@@ -12,8 +12,8 @@ class weather{
 var prevCity = new Array();
 var weekForecast = [new weather(), new weather(), new weather(), new weather(), new weather(), new weather()];
 var searchEl = document.getElementById("citySearch");
-const weatherAPIKey = "1baaf4b6d9aa798b3b8d3da12f59ef1f";
-const bingMapsAPIKey = "AqBjs9NHGIEZvYOeZEnKxKECXHpOHtdfQFrvkMwLm4iGlk5-il_6PI1U6c5Bwu9s";
+const weatherAPIKey;
+const bingMapsAPIKey;
 
 searchEl.addEventListener("submit", citySearch);
 displayHistory();
