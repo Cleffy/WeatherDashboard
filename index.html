@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
     <link rel="stylesheet" href="./Assets/style.css" />
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <script src="https://kit.fontawesome.com/d08f6abaa4.js" crossorigin="anonymous"></script>
     <!--Get your own code at fontawesome.com-->
 </head>
 <body>
@@ -14,9 +14,10 @@
     </header>
     <aside>
         <h2>Search for a City:</h2>
-        <form>
-            <textarea>San Diego</textarea>
-            <button>Search</button>
+        <form id="citySearch">
+            <label for="cityInput">City:</label>
+            <input type="text" id="cityInput" name="cityInput" />
+            <button type="submit">Search</button>
         </form>
         <section id="history">
         </section>
