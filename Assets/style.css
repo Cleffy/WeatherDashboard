@@ -1,51 +1,63 @@
 /* Variables */
-
+:root{
+    --primaryColor: #000066;
+    --accentColor: #3333ff;
+    --contrastColor: white;
+    --alternateText: black;
+    --alertColor: red;
+    --padding: 8px;
+    --margin: 4px;
+    --radius: 8px;
+    --border: 4px;
+}
 /* Global Styling */
 body{
-    max-width: 100%;
-    margin: 0px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
+
 /* Header */
 header{
-    color: white;
-    background-image: linear-gradient(90deg, #3333ff, #000066);
+    color: var(--contrastColor);
+    background-image: linear-gradient(90deg, var(--accentColor), var(--primaryColor));
 }
 h1{
-    width: 100%;
-    padding: 8px;
+    padding: var(--padding);
     text-align: center;
 }
 
 /* Aside */
 aside{
-    max-width: 20%;
 }
 button{
     width: 75%;
 }
-#citySearch button{
-    background-color: #0099cc;
-    color: white;
+button:hover{
+    background-color: var(--accentColor);
+    color: var(--contrastColor);
+}
+i{
+    font-size: 24px;
+}
+i:hover{
+    color: var(--alertColor);
 }
 
 /* Main */
 main{
-    max-width: 75%;
+    display: none;
 }
-
-/* Responsive Design*/
-#currentConditions{
-    border: 4px;
+#currentConditions, #forecast{
+    border: var(--border);
     border-style: solid;
-    border-color: black;
-    padding: 16px;
+    border-color: var(--primaryColor);
+    margin: var(--margin);
+    padding: var(--padding);
 }
 .weatherCard{
     display: inline-block;
-    max-width: max-content;
-    padding: 16px;
-    margin: 16px;
-    border-radius: 16px;
-    color: white;
-    background-color: #264d73;
+    padding: var(--padding);
+    margin: var(--margin);
+    border-radius: var(--radius);
+    color: var(--contrastColor);
+    background-color: var(--primaryColor);
 }
