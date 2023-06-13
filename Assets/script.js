@@ -128,14 +128,14 @@ async function citySearch(event) {
     ToDo: Fetch API call from backend rather than frontend
 */
 async function getWeather(city){
-    let geoLocation = await fetchData("http://dev.virtualearth.net/REST/v1/Locations?query=" + city + "&include=queryParse&key=" + bingMapsAPIKey + "&output=json");
+    let geoLocation = await fetchData("https://dev.virtualearth.net/REST/v1/Locations?query=" + city + "&include=queryParse&key=" + bingMapsAPIKey + "&output=json");
     if(geoLocation.statusCode == 401){
         return false;
     }
     let lat = geoLocation.resourceSets[0].resources[0].geocodePoints[0].coordinates[0];
     let lon = geoLocation.resourceSets[0].resources[0].geocodePoints[0].coordinates[1];
 
-    let forecast = await fetchData("http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + weatherAPIKey);
+    let forecast = await fetchData("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + weatherAPIKey);
     if(forecast.statusCode == 401){
         return false;
     }
